@@ -10,9 +10,10 @@ Backend (Django):
 - GraphiQL: http://localhost:8000/graphql/
 
 Frontend (React):
-- cd frontend
+- cd next-front
 - npm install
-- npm start (http://localhost:3000)
+- npm run dev/build
+- (prod) npm start (http://localhost:3000)
 
 Backend (Django + Graphene) details:
 - Requirements:
