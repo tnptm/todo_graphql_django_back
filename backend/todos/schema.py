@@ -89,6 +89,7 @@ class Query(graphene.ObjectType):
 
     @login_required
     def resolve_todos(self, info):
+        """Resolve list of todos for the logged-in user"""
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
@@ -96,6 +97,7 @@ class Query(graphene.ObjectType):
 
     @login_required
     def resolve_todo(self, info, id):
+        """Resolve a single todo by ID for the logged-in user"""
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
@@ -103,6 +105,7 @@ class Query(graphene.ObjectType):
 
     @login_required
     def resolve_me(self, info):
+        """Resolve the currently logged-in user"""
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
@@ -118,6 +121,7 @@ class CreateTodo(graphene.Mutation):
 
     @login_required
     def mutate(self, info, text):
+        """Create a new todo for the logged-in user"""
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
@@ -136,6 +140,7 @@ class UpdateTodo(graphene.Mutation):
 
     @login_required
     def mutate(self, info, id, text=None, completed=None):
+        """Update an existing todo for the logged-in user"""
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
@@ -157,6 +162,7 @@ class DeleteTodo(graphene.Mutation):
 
     @login_required
     def mutate(self, info, id):
+        """Delete an existing todo for the logged-in user"""
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
