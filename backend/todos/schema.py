@@ -1,6 +1,11 @@
+"""GraphQL schema for Todo application including User and Todo models with JWT authentication.
+
+author: tonipat047@gmail.com
+"""
+
 import graphene
 import graphql_jwt
-from django.contrib.auth import get_user_model
+#from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
 from graphql_jwt.decorators import login_required
@@ -10,15 +15,18 @@ from .models import Todo
 
 # User List Schema
 class UserType(DjangoObjectType):
+    """GraphQL type for User model"""
     class Meta:
         model = User
         fields = ("id", "username", "email")
 
 
 class CreateUser(graphene.Mutation):
+    """Create a new user"""
     user = graphene.Field(UserType)
 
     class Arguments:
+        """Arguments for creating a new user"""
         username = graphene.String(required=True)
         email = graphene.String(required=True)
         password = graphene.String(required=True)
@@ -31,6 +39,7 @@ class CreateUser(graphene.Mutation):
 
 
 class UpdateUser(graphene.Mutation):
+    """Update an existing user"""
     user = graphene.Field(UserType)
 
     class Arguments:
@@ -52,6 +61,7 @@ class UpdateUser(graphene.Mutation):
 
 
 class DeleteUser(graphene.Mutation):
+    """Delete an existing user"""
     success = graphene.Boolean()
 
     class Arguments:
@@ -65,12 +75,14 @@ class DeleteUser(graphene.Mutation):
 
 # Todo List Schema
 class TodoType(DjangoObjectType):
+    """GraphQL type for Todo model"""
     class Meta:
         model = Todo
         fields = ("id", "text", "completed", "created_at", "owner")
 
 
 class Query(graphene.ObjectType):
+    """GraphQL query schema"""
     todos = graphene.List(TodoType)
     todo = graphene.Field(TodoType, id=graphene.Int())
     me = graphene.Field(UserType)
@@ -98,6 +110,7 @@ class Query(graphene.ObjectType):
 
 
 class CreateTodo(graphene.Mutation):
+    """Create a new todo"""
     todo = graphene.Field(TodoType)
 
     class Arguments:
@@ -113,6 +126,7 @@ class CreateTodo(graphene.Mutation):
 
 
 class UpdateTodo(graphene.Mutation):
+    """Update an existing todo"""
     todo = graphene.Field(TodoType)
 
     class Arguments:
@@ -135,6 +149,7 @@ class UpdateTodo(graphene.Mutation):
 
 
 class DeleteTodo(graphene.Mutation):
+    """Delete an existing todo"""
     ok = graphene.Boolean()
 
     class Arguments:
@@ -151,6 +166,7 @@ class DeleteTodo(graphene.Mutation):
 
 
 class Mutation(graphene.ObjectType):
+    """GraphQL mutation schema"""
     create_todo = CreateTodo.Field()
     update_todo = UpdateTodo.Field()
     delete_todo = DeleteTodo.Field()

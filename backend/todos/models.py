@@ -1,6 +1,4 @@
-#from socket import TIPC_DEST_DROPPABLE
-#from termios import TAB0
-
+"""Django models for Todo application."""
 from django.db import models
 
 
