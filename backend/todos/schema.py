@@ -67,20 +67,34 @@ class DeleteUser(graphene.Mutation):
 class TodoType(DjangoObjectType):
     class Meta:
         model = Todo
-        fields = ("id", "text", "completed", "created_at")
+        fields = ("id", "text", "completed", "created_at", "owner")
 
 
 class Query(graphene.ObjectType):
     todos = graphene.List(TodoType)
     todo = graphene.Field(TodoType, id=graphene.Int())
+    me = graphene.Field(UserType)
 
     @login_required
     def resolve_todos(self, info):
-        return Todo.objects.order_by("-created_at").all()
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+        return Todo.objects.filter(owner=user).order_by("-created_at").all()
 
     @login_required
     def resolve_todo(self, info, id):
-        return Todo.objects.get(pk=id)
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+        return Todo.objects.get(pk=id, owner=user)
+
+    @login_required
+    def resolve_me(self, info):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+        return user
 
 
 class CreateTodo(graphene.Mutation):
@@ -91,7 +105,10 @@ class CreateTodo(graphene.Mutation):
 
     @login_required
     def mutate(self, info, text):
-        todo = Todo.objects.create(text=text)
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+        todo = Todo.objects.create(text=text, owner=user)
         return CreateTodo(todo=todo)
 
 
@@ -103,8 +120,12 @@ class UpdateTodo(graphene.Mutation):
         text = graphene.String()
         completed = graphene.Boolean()
 
+    @login_required
     def mutate(self, info, id, text=None, completed=None):
-        todo = Todo.objects.get(pk=id)
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+        todo = Todo.objects.get(pk=id, owner=user)
         if text is not None:
             todo.text = text
         if completed is not None:
@@ -119,8 +140,12 @@ class DeleteTodo(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
 
+    @login_required
     def mutate(self, info, id):
-        todo = Todo.objects.get(pk=id)
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+        todo = Todo.objects.get(pk=id, owner=user)
         todo.delete()
         return DeleteTodo(ok=True)
 
