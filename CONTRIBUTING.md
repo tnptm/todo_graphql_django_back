@@ -4,7 +4,7 @@ Thank you for contributing to this repository.
 
 ## Maintainer
 
-- Repository owner and final reviewer: **@tptm**
+- Repository owner and final reviewer: **@tnptm**
 
 ## Contribution Rules
 
@@ -24,7 +24,7 @@ Thank you for contributing to this repository.
     - Ensure checks/tests pass before requesting review.
 
 5. **Review and merge policy**  
-    - Only **@tptm** approves and merges PRs.
+    - Only **@tnptm** approves and merges PRs.
 
 ## Code of Conduct
 
