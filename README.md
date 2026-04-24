@@ -1,4 +1,4 @@
-Fullstack Todo example (Django + Graphene + NextJS/React + Apollo)
+GraphQL Todo django Backend example (Django + Graphene)
 ---------------------------------------------------------
 
 Backend (Django):
@@ -8,12 +8,6 @@ Backend (Django):
 - python manage.py migrate
 - python manage.py runserver 8000
 - GraphiQL: http://localhost:8000/graphql/
-
-Frontend (React):
-- cd next-front
-- npm install
-- npm run dev/build
-- (prod) npm start (http://localhost:3000)
 
 Backend (Django + Graphene) details:
 - Requirements:
